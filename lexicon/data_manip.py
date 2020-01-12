@@ -3,8 +3,7 @@ import pandas as pd
 import numpy as np 
 import re
 import matplotlib.pyplot as plt
-import seaborn as sns; sns.set(font_scale=1.2)
-df = pd.read_csv("kpu_scored_no_netral_coba.csv")
+df = pd.read_csv("banjir1000.csv")
 df
 
 #%%
@@ -13,16 +12,20 @@ dfloc.rename({"Unnamed: 0":"a"}, axis="columns",inplace=True)
 
 del dfloc["a"]
 #%%
+dfloc
+#%%
 dfneg = dfloc[dfloc["Scores"] != 1]
-dfneg.to_csv("data2negatif_fix.csv")
+dfneg.to_csv("data2negatifbanjir_fix.csv")
 
 #%%
 dfpos = dfloc[dfloc["Scores"] != -1]
-dfpos.to_csv("data2positif_fix.csv")
+dfpos.to_csv("data2positifbanjir_fix.csv")
 
 #%%
 words = dfloc["Tweet"]
 scores = dfloc["Scores"]
+#%%
+words
 #%%
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
@@ -36,7 +39,7 @@ model = GridSearchCV(SVC(), {'gamma':[1, 0.1, 0.001, 0.0001, 0.00001],
                                  refit=True, verbose=0)
 
 #%%
-words_f = vectorizer.fit_transform(raw_documents=words)
+words_f = vectorizer.fit_transform(raw_documents=words.astype('U'))
 
 #%%
 x_train, x_test, y_train, y_test = train_test_split(words_f, scores,
@@ -100,7 +103,7 @@ dfapaini = pd.DataFrame({
     "Prediksi" : y_pred
 })
 #%%
-dfapaini.to_csv("Hasil_prediksi.csv")
+dfapaini.to_csv("Hasil_prediksi_banjir_82.csv")
 
 #%%
 
